@@ -1,0 +1,12 @@
+[submodule "knowledgecollector"]
+	path = knowledgecollector
+	url = https://github.com/smartkms/knowledgecollector.git
+[submodule "SmartKMS_RAG"]
+	path = SmartKMS_RAG
+	url = https://github.com/smartkms/SmartKMS_RAG.git
+[submodule "KM-KnowledgeManager"]
+	path = KM-KnowledgeManager
+	url = https://github.com/smartkms/KM-KnowledgeManager.git
+[submodule "SmartKMS-Fe"]
+	path = SmartKMS-Fe
+	url = https://github.com/smartkms/SmartKMS-Fe.git
