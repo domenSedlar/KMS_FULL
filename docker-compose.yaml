@@ -87,7 +87,9 @@ services:
       - "minio"
       - "standalone"
     environment:
-      - REDIS_HOST=redis
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_HOST_PORT=${REDIS_HOST_PORT}
       - VECTOR_DB_URI=${VECTOR_DB_URI}
       - PYTHONPATH=/app
     extra_hosts:
@@ -99,6 +101,12 @@ services:
       dockerfile: collectionEndpoint/Dockerfile
     ports:
       - "${DATA_API_PORT}:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - VECTOR_DB_URI=${VECTOR_DB_URI}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_HOST_PORT=${REDIS_HOST_PORT}
+
     depends_on:
       - redis
       - "etcd"
@@ -113,6 +121,9 @@ services:
       dockerfile: ragEndpoint/Dockerfile
     ports:
       - "${QUERY_API_PORT}:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - VECTOR_DB_URI=${VECTOR_DB_URI}
     depends_on:
       - redis
       - "etcd"
@@ -120,6 +131,23 @@ services:
       - "standalone"
     extra_hosts:
       host.docker.internal: host-gateway  # refrences host machine
+
+  front-api:
+    build:
+      context: ./KM-KnowledgeManager/knowledge_manager/
+      dockerfile: feEndpoint/Dockerfile
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - VECTOR_DB_URI=${VECTOR_DB_URI}
+    ports:
+      - "${KM_FE_API_PORT}:8000"
+    extra_hosts:
+        host.docker.internal: host-gateway  # refrences host machine
+    depends_on:
+      - redis
+      - "etcd"
+      - "minio"
+      - "standalone"
 
 # RAG
   rag-service:
